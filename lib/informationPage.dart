@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
+import 'homePage.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(const Information());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Information extends StatelessWidget {
+  const Information({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'F79 information',
+      title: 'Information Page',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -23,7 +25,6 @@ class MyApp extends StatelessWidget {
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -37,7 +38,6 @@ class _InformationPageState extends State<InformationPage> {
   Widget build(BuildContext context) {
     Jiffy.setLocale("tr");
     String _date = '';
-    final DateTime now = DateTime.now();
     final String date = "${Jiffy.now().EEEE}, ${Jiffy.now().MMMMd}";
     setState(() {
       _date = date;
@@ -47,7 +47,7 @@ class _InformationPageState extends State<InformationPage> {
           title: Text(widget.title),
         ),
         body: Column(
-          children: [
+          children: <Widget>[
             Card(
               margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Column(
@@ -103,20 +103,25 @@ class _InformationPageState extends State<InformationPage> {
                   ListTile(
                     title: Text('Duygu farkındalığı kazandırır.'),
                   ),
-                  OutlinedButton(
+                  FilledButton(
                     style: TextButton.styleFrom(
                       textStyle:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      primary: Colors.deepPurple,
+                      primary: Colors.white,
                       minimumSize: Size(88, 36),
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
-                    onPressed: goHomePage,
-                    child: Text("Hadi Başlayalım"),
-                  )
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomePage(title: "Ana Sayfa")));
+                    },
+                    child: Text("Let's Go!"),
+                  ),
+                  Padding(padding: EdgeInsets.all(10.0))
                 ],
               ),
             )
