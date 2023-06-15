@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:loginexample/button.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -66,6 +81,46 @@ class LoginPage extends StatelessWidget {
               verticalpadding: 15,
             ),
           ]),
+        ),
+      ),
+    );
+  }
+}
+
+class SocialButton extends StatelessWidget {
+  final String iconPath;
+  final String label;
+  final double horizontalPadding;
+  final double verticalpadding;
+  const SocialButton(
+      {Key? key,
+      required this.iconPath,
+      required this.label,
+      this.horizontalPadding = 70,
+      this.verticalpadding = 13})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      onPressed: () {},
+      icon: Image.asset(
+        iconPath,
+        width: 30,
+      ),
+      label: Text(
+        label,
+        style: const TextStyle(color: Colors.black, fontSize: 16),
+      ),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(
+            vertical: verticalpadding, horizontal: horizontalPadding),
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(
+            color: Colors.black,
+            width: 3,
+          ),
+          borderRadius: BorderRadius.circular(50),
         ),
       ),
     );
