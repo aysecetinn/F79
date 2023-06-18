@@ -3,7 +3,7 @@
 #### Flutter 79
 
 # Ürün ile İlgili Bilgiler
-OUA kılavuz
+
 ## Takım Üyeleri
 
 - Ayşe Çetin: Product Owner / Developer <br/>
