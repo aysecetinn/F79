@@ -117,7 +117,7 @@ class _InformationPageState extends State<InformationPage> {
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomePage(title: "Ana Sayfa")));
+                          builder: (context) => HomePage(title: "F79")));
                     },
                     child: Text("Let's Go!"),
                   ),

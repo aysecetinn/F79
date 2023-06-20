@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'F79 Ana Sayfa'),
+      home: const HomePage(title: 'F79'),
     );
   }
 }
