@@ -1,5 +1,4 @@
 import 'package:f79/accountPage.dart';
-import 'package:f79/graphicPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -108,7 +107,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const GraphicPage(),
+                      builder: (context) => HomePage(
+                        title: 'HomePage',
+                      ),
                     ),
                   );
                 },
@@ -138,7 +139,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const AccountPage(),
+                      builder: (context) => const AccountPage(
+                        title: 'AccountPage',
+                      ),
                     ),
                   );
                 },
