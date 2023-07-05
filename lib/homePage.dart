@@ -1,4 +1,6 @@
 import 'package:f79/accountPage.dart';
+import 'package:f79/chartPage.dart';
+import 'package:f79/notificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -75,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const HomePage(
+                      builder: (context) => const NotificationPage(
                         title: 'Farkında Mısın',
                       ),
                     ),
@@ -107,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(
+                      builder: (context) => const ChartPage(
                         title: 'HomePage',
                       ),
                     ),
