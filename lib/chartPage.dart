@@ -7,10 +7,13 @@ String textData = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await getData(); // firebase'den veriyi çekmek için metodu çağırıyoruz
   runApp(const Chart());
 }
 
-// buradaki metod firebaseden veriyi çekmek için yazıldı
+// buradaki metod örnek olarak firebaseden veriyi çekmek için yazıldı.
+// bu metod firebase'den veriyi çekip en yukarıdaki textData değişkenine atıyor.
+// daha sonra ilgili değişkeni widget içerisinde kullanarak veriyor gösteriyoruz.
 Future<void> getData() async {
   var db = FirebaseFirestore.instance;
   final emotions = db.collection("emotion");
@@ -48,9 +51,6 @@ class ChartPage extends StatefulWidget {
 class _ChartPageState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
-    // yukarıda yazdığımız metodu burada çağırarak veriyi çekiyoruz
-    getData();
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
