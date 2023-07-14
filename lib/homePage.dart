@@ -16,11 +16,12 @@ class Home extends StatelessWidget {
     return MaterialApp(
       title: 'F79 Home',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 157, 114, 230)),
+        fontFamily: 'NotoSerifMakasar',
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 138, 116, 185)),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'F79'),
+      home: const HomePage(title: 'Duygu Anlığı'),
     );
   }
 }
@@ -42,129 +43,174 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _date = date;
     });
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          backgroundColor: Color.fromARGB(255, 69, 56, 95),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 23),
+          ),
+          centerTitle: true,
         ),
-        body: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 10,
-            ),
-            Card(
-              margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                      leading: const Icon(
-                        Icons.calendar_today,
-                        color: Colors.deepPurple,
-                      ),
-                      title: Text(_date,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 19)))
-                ],
+        body: Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 234, 219, 255),
+              image: DecorationImage(
+                  image: AssetImage('assets/images/appicon.jpg'),
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.1), BlendMode.dstATop),
+                  fit: BoxFit.cover)),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 25,
               ),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            FilledButton(
-              onPressed: () {},
-              child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NotificationPage(
-                        title: 'Farkında Mısın',
-                      ),
+              Card(
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                        leading: const Icon(
+                          Icons.calendar_today,
+                          color: Color.fromARGB(255, 143, 124, 185),
+                        ),
+                        title: Text(_date,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 19,
+                              fontFamily: 'NotoSerifMakasar',
+                            )))
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 65,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      width: 3,
                     ),
-                  );
-                },
-                icon: Image.asset(
-                  'assets/images/questionicon.png',
-                  width: 40,
-                  color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
-                label: const Text(
-                  'Farkında Mısın',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                ),
-                style: TextButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            FilledButton(
-              onPressed: () {},
-              child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ChartPage(
-                        title: 'HomePage',
+                onPressed: () {},
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationPage(
+                          title: 'Farkında Mısın',
+                        ),
                       ),
+                    );
+                  },
+                  icon: Image.asset(
+                    'assets/images/questionicon.png',
+                    width: 40,
+                    color: Color.fromARGB(255, 69, 56, 95),
+                  ),
+                  label: const Text(
+                    'Farkında Mısın',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      fontSize: 25,
+                      fontFamily: 'NotoSerifMakasar',
                     ),
-                  );
-                },
-                icon: Image.asset(
-                  'assets/images/graphic.png',
-                  width: 40,
-                  color: Colors.white,
-                ),
-                label: const Text(
-                  'Grafikler',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                ),
-                style: TextButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 60),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-            FilledButton(
-              onPressed: () {},
-              child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AccountPage(
-                        title: 'AccountPage',
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: () {},
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ChartPage(
+                          title: 'Grafikler',
+                        ),
                       ),
+                    );
+                  },
+                  icon: Image.asset(
+                    'assets/images/graphic.png',
+                    width: 40,
+                    color: Color.fromARGB(255, 69, 56, 95),
+                  ),
+                  label: const Text(
+                    'Grafikler',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      fontSize: 25,
+                      fontFamily: 'NotoSerifMakasar',
                     ),
-                  );
-                },
-                icon: Image.asset(
-                  'assets/images/account.png',
-                  width: 40,
-                  color: Colors.white,
-                ),
-                label: const Text(
-                  'HESABIM',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                ),
-                style: TextButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 150,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 69, 56, 95),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.circular(45),
+                  ),
+                ),
+                onPressed: () {},
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AccountPage(
+                          title: 'AccountPage',
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Image.asset(
+                    'assets/images/account.png',
+                    width: 40,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'HESABIM',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontFamily: 'NotoSerifMakasar',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
   }
 }

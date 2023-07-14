@@ -15,10 +15,11 @@ class Information extends StatelessWidget {
     return MaterialApp(
       title: 'Information Page',
       theme: ThemeData(
+        fontFamily: 'NotoSerifMakasar',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const InformationPage(title: 'F79'),
+      home: const InformationPage(title: 'Duygu Anlığı'),
     );
   }
 }
@@ -42,90 +43,125 @@ class _InformationPageState extends State<InformationPage> {
     setState(() {
       _date = date;
     });
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 23),
+          ),
+          backgroundColor: Color.fromARGB(255, 69, 56, 95),
+          centerTitle: true,
         ),
-        body: Column(
-          children: <Widget>[
-            Card(
-              margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
+        body: Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 234, 219, 255),
+              image: DecorationImage(
+                  image: AssetImage('assets/images/appicon.jpg'),
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.1), BlendMode.dstATop),
+                  fit: BoxFit.cover)),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              Card(
+                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                        leading: Icon(Icons.calendar_today,
+                            color: Color.fromARGB(255, 138, 116, 185)),
+                        title: Text(_date,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                fontFamily: 'NotoSerifMakasar')))
+                  ],
+                ),
+              ),
+              Padding(padding: EdgeInsets.all(10.0)),
+              Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Image.asset('assets/images/back.jpg'),
+                    ListTile(
                       leading: Icon(
-                        Icons.calendar_today,
-                        color: Colors.deepPurple,
+                        Icons.question_answer,
+                        color: Color.fromARGB(255, 138, 116, 185),
                       ),
-                      title: Text(_date,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)))
-                ],
-              ),
-            ),
-            Padding(padding: EdgeInsets.all(10.0)),
-            Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Image.network(
-                    'https://img.freepik.com/premium-vector/abstract-background-purple-colors_444390-5780.jpg',
-                    fit: BoxFit.fill,
-                  ),
-                  ListTile(
-                    leading:
-                        Icon(Icons.question_answer, color: Colors.deepPurple),
-                    title: Text(
-                      'F79 uygulaması ne amaçla geliştirildi?',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                        'Ruh hali izleme uygulaması bir tür duygu farkındalığı kazandırma egzersizidir.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                        'Gün içinde çok kez kısa bildirimlerle dugyuları kaydeder. Gün haftalık ve aylık raporlar halinde sunar.'),
-                  ),
-                  ListTile(
-                    leading:
-                        Icon(Icons.question_answer, color: Colors.deepPurple),
-                    title: Text(
-                      'F79 uygulaması ne işe yarar?',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Duygu farkındalığı kazandırır.'),
-                  ),
-                  FilledButton(
-                    style: TextButton.styleFrom(
-                      textStyle:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      primary: Colors.white,
-                      minimumSize: Size(88, 36),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      title: Text(
+                        'F79 uygulaması ne amaçla geliştirildi?',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'NotoSerifMakasar'),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomePage(title: "F79")));
-                    },
-                    child: Text("Let's Go!"),
-                  ),
-                  Padding(padding: EdgeInsets.all(10.0))
-                ],
+                    ListTile(
+                      title: Text(
+                          'Ruh hali izleme uygulaması bir tür duygu farkındalığı kazandırma egzersizidir.'),
+                    ),
+                    ListTile(
+                      title: Text(
+                          'Gün içinde çok kez kısa bildirimlerle dugyuları kaydeder. Gün haftalık ve aylık raporlar halinde sunar.'),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.question_answer,
+                        color: Color.fromARGB(255, 138, 116, 185),
+                      ),
+                      title: Text(
+                        'F79 uygulaması ne işe yarar?',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'NotoSerifMakasar'),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Duygu farkındalığı kazandırır.'),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 69, 56, 95),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                            color: Color.fromARGB(255, 69, 56, 95),
+                            width: 3,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HomePage(title: "F79")));
+                      },
+                      child: Text(
+                        "Let's Go!",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'NotoSerifMakasar',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(10.0))
+                  ],
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ));
   }
 }
