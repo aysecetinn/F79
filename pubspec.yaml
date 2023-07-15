@@ -40,6 +40,11 @@ dependencies:
   fl_chart: ^0.63.0
   cloud_firestore: ^4.8.1
   firebase_core: ^2.14.0
+  firebase_auth: ^4.6.3
+  google_sign_in: ^6.1.4
+  flutter_facebook_auth: '^3.5.0'
+  workmanager: ^0.5.1
+  flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:
   flutter_test:

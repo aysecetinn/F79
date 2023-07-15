@@ -1,8 +1,16 @@
-import 'package:f79/accountPage.dart';
+import 'package:f79/main.dart';
+import 'package:f79/chartPage.dart';
+import 'package:f79/notificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+String userName = '';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  userName = FirebaseAuth.instance.currentUser!.displayName!;
   runApp(const Home());
 }
 
@@ -18,14 +26,16 @@ class Home extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 157, 114, 230)),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'F79'),
+      home: const HomePage(title: 'F79', userName: '', userId: ''),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  const HomePage({super.key, required this.title, required this.userId, required this.userName});
   final String title;
+  final String userId;
+  final String userName;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -71,12 +81,32 @@ class _HomePageState extends State<HomePage> {
             ),
             FilledButton(
               onPressed: () {},
+              style: TextButton.styleFrom(
+                textStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                primary: Colors.white,
+                minimumSize: const Size(88, 36),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+              child: Text('Hoşgeldin ' + widget.userName),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            FilledButton(
+              onPressed: () {},
               child: TextButton.icon(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const HomePage(
-                        title: 'Farkında Mısın',
+                      builder: (context) => NotificationPage(
+                        title: 'Duygular',
+                        userId: widget.userId,
+                        userName: widget.userName,
                       ),
                     ),
                   );
@@ -104,11 +134,13 @@ class _HomePageState extends State<HomePage> {
             FilledButton(
               onPressed: () {},
               child: TextButton.icon(
-                onPressed: () {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  await Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(
-                        title: 'HomePage',
+                      builder: (context) => ChartPage(
+                        title: 'Grafikler',
+                        userId: widget.userId,
+                        userName: widget.userName,
                       ),
                     ),
                   );

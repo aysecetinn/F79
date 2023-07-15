@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'homePage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -56,7 +63,9 @@ class LoginPage extends StatelessWidget {
             ),
             SocialButton(
                 iconPath: 'assets/images/google2.png',
-                label: 'Continue with Google'),
+                label: 'Continue with Google',
+                type: 'Google',
+            ),
             SizedBox(
               height: 20,
             ),
@@ -65,24 +74,13 @@ class LoginPage extends StatelessWidget {
               label: 'Continue with Facebook',
               horizontalPadding: 60,
               verticalpadding: 13,
+              type: 'Facebook',
             ),
             SizedBox(
               height: 20,
             ),
-            SocialButton(
-              iconPath: 'assets/images/apple2.png',
-              label: 'Continue with Apple',
-              horizontalPadding: 73,
-              verticalpadding: 9,
-            ),
             SizedBox(
               height: 20,
-            ),
-            SocialButton(
-              iconPath: 'assets/images/mail2.png',
-              label: 'Continue with Email',
-              horizontalPadding: 75,
-              verticalpadding: 15,
             ),
           ]),
         ),
@@ -91,15 +89,39 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+Future<void> loginWithProvider(type, context) async {
+   if (type == 'Facebook') {
+     final LoginResult loginResult = await FacebookAuth.instance.login();
+     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    final res = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+     Navigator.of(context).push(MaterialPageRoute(
+         builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
+  } else {
+     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+     final credential = GoogleAuthProvider.credential(
+       accessToken: googleAuth?.accessToken,
+       idToken: googleAuth?.idToken,
+     );
+
+     final res = await FirebaseAuth.instance.signInWithCredential(credential);
+     Navigator.of(context).push(MaterialPageRoute(
+         builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
+   }
+}
+
 class SocialButton extends StatelessWidget {
   final String iconPath;
   final String label;
+  final String type;
   final double horizontalPadding;
   final double verticalpadding;
   const SocialButton(
       {Key? key,
       required this.iconPath,
       required this.label,
+      required this.type,
       this.horizontalPadding = 70,
       this.verticalpadding = 13})
       : super(key: key);
@@ -107,7 +129,7 @@ class SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () {},
+      onPressed: () async { await loginWithProvider(type, context); },
       icon: Image.asset(
         iconPath,
         width: 30,

@@ -1,23 +1,69 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 
 String textData = '';
+String createdDate = '';
+List emotionData = [];
+List locationData = [];
+List<EmotionClass> _result = [];
+bool isToday = true;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const Chart());
 }
 
-// buradaki metod firebaseden veriyi çekmek için yazıldı
-Future<void> getData() async {
+class EmotionClass {
+  String emotionName = "";
+  String colorCode = "";
+  int count = 0;
+  String location = "";
+}
+
+// buradaki metod örnek olarak firebaseden veriyi çekmek için yazıldı.
+// bu metod firebase'den veriyi çekip en yukarıdaki textData değişkenine atıyor.
+// daha sonra ilgili değişkeni widget içerisinde kullanarak veriyor gösteriyoruz.
+Future<String> getData(String userId, bool isToday) async {
+  _result = [];
+  var now = DateTime.now();
+  var date = now.year.toString() + "-" + now.month.toString() + "-" + (isToday ? now.day.toString() : (now.day - 1).toString());
   var db = FirebaseFirestore.instance;
-  final emotions = db.collection("emotion");
-  final docs = emotions.doc("xsexbUXNof6Wpx1ATWQl");
-  var response = await docs.get();
-  var data = response.data() as Map;
-  textData = data["text"];
+  var reference = db.collection('emotion/${userId}/$date');
+  var response = await reference.get();
+
+  if (!isToday) {
+    int day = DateTime.now().day;
+    date = date.replaceAll(day.toString(), (day - 1).toString());
+  }
+  locationData = [];
+
+  //gün içerisinde eklenen duygular forEach ile döngüye sokuluyor
+  response.docs.forEach((userDatas) {
+    var datas = userDatas.data();
+    var emotions = datas['emotions'];
+    var location = datas['locations'].join(',').split(',')[0];
+    locationData.add(location);
+    for(var emotion in emotions) {
+      if (_result.any((element) => element.emotionName == emotion.split(',')[0])) {
+        var value = _result.where((element) => element.emotionName == emotion.split(',')[0]).first;
+        _result.remove(value);
+        value.count += 1;
+        _result.add(value);
+      } else {
+        EmotionClass emotionClass = EmotionClass();
+        emotionClass.emotionName = emotion.split(',')[0];
+        emotionClass.colorCode = emotion.split(',')[1];
+        emotionClass.count = 1;
+        _result.add(emotionClass);
+      }
+    }
+  });
+
+  return "";
 }
 
 class Chart extends StatelessWidget {
@@ -25,20 +71,78 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Chart',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChartPage(title: 'F79'),
+      home: const ChartPage(title: 'F79', userId: '', userName: ''),
     );
   }
 }
 
+PieChartSectionData CreatePie(int i) {
+  final isTouched = i == -1;
+  final fontSize = isTouched ? 25.0 : 16.0;
+  final radius = isTouched ? 60.0 : 50.0;
+  const shadows = [Shadow(color: Colors.black, blurRadius: 1)];
+  return PieChartSectionData(
+    color: Color(int.parse(_result[i].colorCode)),
+    value: _result[i].count * 10,
+    title: _result[i].emotionName,
+    radius: radius,
+    titleStyle: TextStyle(
+      fontSize: fontSize,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      shadows: shadows,
+    ),
+  );
+}
+
+List<PieChartSectionData> showingSections(List<EmotionClass> _result) {
+  if (_result.isEmpty) {
+    final isTouched = false;
+    final fontSize = isTouched ? 25.0 : 16.0;
+    final radius = isTouched ? 60.0 : 50.0;
+    const shadows = [Shadow(color: Colors.black, blurRadius: 1)];
+    return List.generate(1, (i) {
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: const Color(0XFF5d6c90),
+            value: 100,
+            title: "",
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: shadows,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
+  } else {
+    return List.generate(_result.length, (i) {
+      for (var emotion in _result) {
+        return CreatePie(i);
+      }
+
+      return CreatePie(i);
+    });
+  }
+}
+
 class ChartPage extends StatefulWidget {
-  const ChartPage({super.key, required this.title});
+  const ChartPage({super.key, required this.title, required this.userId, required this.userName});
   final String title;
+  final String userId;
+  final String userName;
 
   @override
   State<ChartPage> createState() => _ChartPageState();
@@ -48,28 +152,131 @@ class ChartPage extends StatefulWidget {
 class _ChartPageState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
-    // yukarıda yazdığımız metodu burada çağırarak veriyi çekiyoruz
-    getData();
+    Jiffy.setLocale("tr");
+    String _date = '';
+    String date = "${Jiffy.now().EEEE}, ${Jiffy.now().MMMMd}";
+    if (!isToday) {
+      int day = DateTime.now().day;
+      date = date.replaceAll(day.toString(), (day - 1).toString());
+    }
+    setState(() {
+      _date = date;
+    });
 
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
         ),
-        body: Center(
-            child: PieChart(PieChartData(
-                centerSpaceRadius: 10,
-                borderData: FlBorderData(show: false),
-                sections: [
-              PieChartSectionData(value: 10, color: Colors.purple, radius: 150),
-              PieChartSectionData(value: 20, color: Colors.amber, radius: 150),
-              PieChartSectionData(
-                value: 30,
-                color: Colors.green,
-                radius: 150,
-                title: textData != '' ? textData : 'Firebase verisi çekilemedi',
-                showTitle: true,
-              )
-            ]))));
+        body: Column(
+            children: <Widget>[
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        FilledButton(
+                          onPressed: () { setState(() {
+                            isToday = false;
+                          }); },
+                          style: TextButton.styleFrom(
+                            textStyle:
+                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            primary: Colors.white,
+                            minimumSize: Size((MediaQuery.of(context).size.width - 10) / 2, 36),
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          child: Text('Önceki Gün'),
+                        ),
+                        FilledButton(
+                          onPressed: () { setState(() {
+                            isToday = true;
+                          }); },
+                          style: TextButton.styleFrom(
+                            textStyle:
+                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            primary: Colors.white,
+                            minimumSize: Size((MediaQuery.of(context).size.width - 10) / 2, 36),
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          child: Text('Bugün'),
+                        ),
+                      ]
+                    )
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                        leading: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.deepPurple,
+                        ),
+                        title: Text(_date,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 19)))
+                  ],
+                ),
+              ),
+              FutureBuilder<String>(
+              future: getData(widget.userId, isToday),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.hasData) {
+                    return Container(
+                        child: Column(
+                            children: <Widget> [
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: PieChart(
+                                  PieChartData(
+                                    pieTouchData: PieTouchData(touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                    },
+                                    ),
+                                    borderData: FlBorderData(
+                                      show: false,
+                                    ),
+                                    sectionsSpace: 0.5,
+                                    centerSpaceRadius: 100,
+                                    sections: showingSections(_result),
+                                  ),
+                                ),
+                              ),
+                              Padding(padding: EdgeInsets.all(50.0)),
+                              Card(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                        leading: const Icon(
+                                          Icons.location_on_outlined,
+                                          color: Colors.deepPurple,
+                                        ),
+                                        title: Text('Konumlar: ${locationData.join(',')}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold, fontSize: 19)))
+                                  ],
+                                ),
+                              ),
+                            ]
+                        )
+                    );
+                } else {
+                  return Text(widget.userName + ' kullanıcısının verileri getiriliyor.');
+                }
+              },
+            ),
+            ]));
   }
 }

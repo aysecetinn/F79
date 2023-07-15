@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:workmanager/workmanager.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+  Workmanager().registerPeriodicTask("10","emotionF79",frequency: const Duration(minutes: 5));
+
   runApp(const Account());
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    FlutterLocalNotificationsPlugin flip = FlutterLocalNotificationsPlugin();
+    var android = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var IOS = const DarwinInitializationSettings();
+    var settings = InitializationSettings(android: android, iOS: IOS);
+    flip.initialize(settings);
+    _showNotificationWithDefaultSound(flip);
+    return Future.value(true);
+  });
+}
+
+Future _showNotificationWithDefaultSound(flip) async {
+  var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'emotionf79id',
+      'emotionf70channel',
+      importance: Importance.max,
+      priority: Priority.high
+  );
+  var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics
+  );
+  await flip.show(0, 'Duygularını Keşfet',
+      'Hadi ne hissettiğini görelim!',
+      platformChannelSpecifics, payload: 'Default_Sound'
+  );
 }
 
 class Account extends StatelessWidget {
