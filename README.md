@@ -37,7 +37,7 @@ Birincil: Duygu Anlığı 6 temel duygu ve etrafındaki ilişkili birçok duyguy
 - Sprint içinde tamamlanması tahmin edilen puan: 100 Puan
 - Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 300 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde her sprint 100 puan olarak belirlendi.
 
-- Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı ekran görüntüleri: 
+- Daily Scrum:
 
 - Sprint board update: Sprint board screenshotları:
 <img width="900" alt="Ekran görüntüsü 2023-06-18 233255" src="https://github.com/aysecetinn/F79/assets/129604808/7e2e02b6-1fd4-46d1-9996-6b1cf3bceb2c">
@@ -47,8 +47,24 @@ Birincil: Duygu Anlığı 6 temel duygu ve etrafındaki ilişkili birçok duyguy
 <img width="300" alt="Screenshot_1687120070" src="https://github.com/aysecetinn/F79/assets/129604808/31f31380-5020-4c0c-a5b3-a235d3f59987">
 <img width="300" alt="Screenshot_1687120008" src="https://github.com/aysecetinn/F79/assets/129604808/e8d79d19-3ad0-4834-9d26-8f2c1703f0bf">
 
-- Sprint Review: Temel sayfaların 4/6'sı oluşturuldu. 
+- Sprint Review: Temel sayfaların 4/6'sı oluşturuldu.
+---
+# Sprint 2
+- Sprint içinde tamamlanması tahmin edilen puan: 100 puan
 
+- Daily Scrum:
+[Sprint 2 Daily Scrum Chats.docx](https://github.com/aysecetinn/F79/files/11931254/Sprint.2.Daily.Scrum.Chats.docx)
+
+- Sprint board update: Sprint board screenshotları:
+<img width="900" alt="Ekran görüntüsü 2023-07-02 230851" src="https://github.com/aysecetinn/F79/assets/129604808/09608d63-382a-4fca-a8e2-1a1b18220f0e">
+
+- Ürün Durumu: Ekran görüntüleri:
+<img width="300" alt="Screenshot_1688328596" src="https://github.com/aysecetinn/F79/assets/129604808/5a50ea05-d8c2-4fa0-89dd-7b5448c8b1f6">
+<img width="300" alt="Screenshot_1688324629" src="https://github.com/aysecetinn/F79/assets/129604808/c456f4cd-a9c6-4a3a-b8ac-3745da273a20">
+
+- Sprint Review: Account ve Notification page tamamlandı. Firebase bağlantısı sağlandı. Eksikler değerlendirildi.
+
+- Sprint Retrospective: Daily Srcuma önem verilmesi vurgulanmıştır.
 
 
 
