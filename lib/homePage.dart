@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const NotificationPage(
+                        builder: (context) => NotificationPage(
                           title: 'Farkında Mısın',
                           userId: widget.userId,
                           userName: widget.userName,
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const ChartPage(
+                        builder: (context) => ChartPage(
                           title: 'Grafikler',
                           userId: widget.userId,
                           userName: widget.userName,

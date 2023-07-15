@@ -33,7 +33,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return const Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -85,85 +84,6 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
           ]),
-=======
-    final screenSize = MediaQuery.of(context).size;
-
-    return Scaffold(
-      body: Container(
-        width: screenSize.width,
-        height: screenSize.height,
-        decoration: BoxDecoration(
-            color: Color.fromARGB(255, 234, 219, 255),
-            image: DecorationImage(
-                image: AssetImage('assets/images/appicon.jpg'),
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.1), BlendMode.dstATop),
-                fit: BoxFit.cover)),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(children: [
-              SizedBox(
-                height: 55,
-              ),
-              Image.asset(
-                'assets/images/logo.png',
-                width: 200,
-              ),
-              SizedBox(
-                height: 35,
-              ),
-              Text(
-                'Welcome to Duygu Anlığı',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    fontFamily: 'NotoSerifMakasar'),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                'Create an account to begin your journey of becoming aware of your emotions.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, fontFamily: 'NotoSerifMakasar'),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              SocialButton(
-                  iconPath: 'assets/images/google2.png',
-                  label: 'Continue with Google'),
-              SizedBox(
-                height: 20,
-              ),
-              SocialButton(
-                iconPath: 'assets/images/facebook2.png',
-                label: 'Continue with Facebook',
-                horizontalPadding: 60,
-                verticalpadding: 13,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SocialButton(
-                iconPath: 'assets/images/apple2.png',
-                label: 'Continue with Apple',
-                horizontalPadding: 73,
-                verticalpadding: 9,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SocialButton(
-                iconPath: 'assets/images/mail2.png',
-                label: 'Continue with Email',
-                horizontalPadding: 75,
-                verticalpadding: 15,
-              ),
-            ]),
-          ),
->>>>>>> 3591813349166a932dd9a6198b1934048a924f05
         ),
       ),
     );

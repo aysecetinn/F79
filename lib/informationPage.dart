@@ -145,7 +145,7 @@ class _InformationPageState extends State<InformationPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomePage(title: "F79", userName: '', userId: '')))
+                          builder: (context) => HomePage(title: "F79", userName: '', userId: '')));
                       },
                       child: const Text(
                         "Let's Go!",
