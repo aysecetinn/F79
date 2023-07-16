@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'homePage.dart';
+import 'package:localstore/localstore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -91,11 +92,18 @@ class LoginPage extends StatelessWidget {
 }
 
 Future<void> loginWithProvider(type, context) async {
+  final db = Localstore.instance;
+  final id = "myUser";
    if (type == 'Facebook') {
      final LoginResult loginResult = await FacebookAuth.instance.login();
      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     final res = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+     db.collection('user').doc(id).set({
+       'userId': res.user!.uid!,
+       'userName': res.user!.displayName!,
+       'photo': res.user!.photoURL!
+     });
      Navigator.of(context).push(MaterialPageRoute(
          builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
   } else {
@@ -107,6 +115,11 @@ Future<void> loginWithProvider(type, context) async {
      );
 
      final res = await FirebaseAuth.instance.signInWithCredential(credential);
+     db.collection('user').doc(id).set({
+       'userId': res.user!.uid!,
+       'userName': res.user!.displayName!,
+       'photo': res.user!.photoURL!
+     });
      Navigator.of(context).push(MaterialPageRoute(
          builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
    }

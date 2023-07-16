@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:f79/chartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:localstore/localstore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +37,12 @@ class NotificationPage extends StatefulWidget {
   State<NotificationPage> createState() => _NotificationPageState();
 }
 
+Future<Map<String, dynamic>?> getUserValue() async {
+  final db = Localstore.instance;
+  var userData = await db.collection('user').doc("myUser").get();
 
+  return userData;
+}
 
 class _NotificationPageState extends State<NotificationPage> {
   bool isSelected = false;
@@ -44,25 +50,27 @@ class _NotificationPageState extends State<NotificationPage> {
   var _emotions = [];
   var _locations = [];
 
-  saveEmotionsWithFirebase (context) {
+
+  saveEmotionsWithFirebase (context, data) {
+    print('user: ' + data["userId"]);
     var now = DateTime.now();
     var date = now.year.toString() + "-" + now.month.toString() + "-" + now.day.toString();
     var db = FirebaseFirestore.instance;
-    db.collection('emotion/${widget.userId}/$date').add({
+    db.collection('emotion/${data["userId"]}/$date').add({
       "emotions": _emotions,
       "locations": _locations,
       "createdTime": now.hour.toString() + ":" + now.minute.toString()
     }).catchError((err) => print(err));
 
-    //Navigator.of(context).push(
-    //  MaterialPageRoute(
-    //    builder: (context) => ChartPage(
-    //      title: 'Grafik Sayfan',
-    //      userId: widget.userId,
-    //      userName: widget.userName,
-    //    ),
-    //  ),
-    //);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChartPage(
+          title: 'Grafik Sayfan',
+          userId: data["userId"],
+          userName: data["userName"],
+        ),
+      ),
+    );
   }
 
   FilterChip CreateFilterChip(String emotion, String colorCode) {
@@ -181,21 +189,28 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
           ),
           Padding(padding: EdgeInsets.all(10.0)),
-          OutlinedButton(
-            style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              primary: Colors.purple,
-              minimumSize: Size(88, 36),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-            ),
-            onPressed: () {
-              saveEmotionsWithFirebase(context);
-            },
-            child: Text("Save and Exit"),
-          )
+          FutureBuilder<Map<String, dynamic>?>(
+            future: getUserValue(),
+            builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
+              if (snapshot.hasData) {
+                return OutlinedButton(
+                  style: TextButton.styleFrom(
+                    textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    primary: Colors.purple,
+                    minimumSize: Size(88, 36),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                  onPressed: () {
+                    saveEmotionsWithFirebase(context, snapshot.data);
+                  },
+                  child: const Text("Kaydet"),
+                );
+              } else { return Text("Kayıt Butonu Yükleniyor"); }
+            }
+          ),
         ],
       ),
     );

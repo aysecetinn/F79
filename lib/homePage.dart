@@ -1,16 +1,21 @@
-import 'package:f79/main.dart';
+import 'package:f79/AccountPage.dart';
 import 'package:f79/chartPage.dart';
 import 'package:f79/notificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:localstore/localstore.dart';
 
-String userName = '';
+import 'loginPage.dart';
+
+Map<String, dynamic>? userData;
+bool isLogged = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  userName = FirebaseAuth.instance.currentUser!.displayName!;
+  final db = Localstore.instance;
+  userData = await db.collection('user').doc("myUser").get();
+
   runApp(const Home());
 }
 
@@ -50,6 +55,7 @@ class _HomePageState extends State<HomePage> {
     final String date = "${Jiffy.now().EEEE}, ${Jiffy.now().MMMMd}";
     setState(() {
       _date = date;
+      isLogged = userData?["userId"] != null;
     });
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -72,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.1), BlendMode.dstATop),
                   fit: BoxFit.cover)),
-          child: Column(
+          child: isLogged ? Column(
             children: <Widget>[
               const SizedBox(
                 height: 25,
@@ -221,7 +227,45 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 30,
+              ),
             ],
+          ) :
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 69, 56, 95),
+                  width: 3,
+                ),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onPressed: () {},
+            child: TextButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+              icon: Image.asset(
+                'assets/images/account.png',
+                width: 40,
+                color: Color.fromARGB(255, 69, 56, 95),
+              ),
+              label: const Text(
+                'Giriş Yapınız',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 69, 56, 95),
+                  fontSize: 25,
+                  fontFamily: 'NotoSerifMakasar',
+                ),
+              ),
+            ),
           ),
         ));
   }
