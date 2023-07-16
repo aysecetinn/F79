@@ -132,7 +132,7 @@ class _NotificationPageState extends State<NotificationPage> {
         ),
         centerTitle: true,
       ),
-      body: Column(
+      body: SingleChildScrollView(child: Column(
         children: <Widget>[
           Card(
             child: Column(
@@ -212,7 +212,7 @@ class _NotificationPageState extends State<NotificationPage> {
             }
           ),
         ],
-      ),
+      )),
     );
   }
 }

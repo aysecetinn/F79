@@ -4,13 +4,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:localstore/localstore.dart';
 
 String textData = '';
 String createdDate = '';
 List emotionData = [];
 List locationData = [];
 List<EmotionClass> _result = [];
+List<LocationClass> _locations = [];
+List<Widget> _progressList = [];
 bool isToday = true;
+Map<String, dynamic>? userData;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,17 +26,27 @@ class EmotionClass {
   String colorCode = "";
   int count = 0;
   String location = "";
+  Map<String, dynamic>? userData;
+}
+
+class LocationClass {
+  String locationName = "";
+  String colorCode = "";
+  int count = 0;
 }
 
 // buradaki metod örnek olarak firebaseden veriyi çekmek için yazıldı.
 // bu metod firebase'den veriyi çekip en yukarıdaki textData değişkenine atıyor.
 // daha sonra ilgili değişkeni widget içerisinde kullanarak veriyor gösteriyoruz.
-Future<String> getData(String userId, bool isToday) async {
+Future<String> getData(bool isToday) async {
+  final localDb = Localstore.instance;
+  userData = await localDb.collection('user').doc("myUser").get();
+
   _result = [];
   var now = DateTime.now();
   var date = now.year.toString() + "-" + now.month.toString() + "-" + (isToday ? now.day.toString() : (now.day - 1).toString());
   var db = FirebaseFirestore.instance;
-  var reference = db.collection('emotion/${userId}/$date');
+  var reference = db.collection('emotion/${userData?["userId"]}/$date');
   var response = await reference.get();
 
   if (!isToday) {
@@ -45,7 +59,7 @@ Future<String> getData(String userId, bool isToday) async {
   response.docs.forEach((userDatas) {
     var datas = userDatas.data();
     var emotions = datas['emotions'];
-    var location = datas['locations'].join(',').split(',')[0];
+    var location = datas['locations'];
     locationData.add(location);
     for(var emotion in emotions) {
       if (_result.any((element) => element.emotionName == emotion.split(',')[0])) {
@@ -62,6 +76,7 @@ Future<String> getData(String userId, bool isToday) async {
       }
     }
   });
+  ProgressBarList(locationData);
 
   return "";
 }
@@ -138,6 +153,24 @@ List<PieChartSectionData> showingSections(List<EmotionClass> _result) {
   }
 }
 
+List<LocationClass> ProgressBarList(List<dynamic> locations) {
+  _locations = [];
+
+  for (var locationVal in locations) {
+    if (_locations.any((element) => element.locationName == locationVal[0].split(',')[0])){
+      continue;
+    }
+    LocationClass locationClass = LocationClass();
+    locationClass.locationName = locationVal[0].split(',')[0];
+    locationClass.colorCode = locationVal[0].split(',')[1];
+    locationClass.count = locations.where((element) => element[0].split(',')[0] == locationVal[0].split(',')[0]).length;
+
+    _locations.add(locationClass);
+  }
+
+    return _locations;
+}
+
 class ChartPage extends StatefulWidget {
   const ChartPage({super.key, required this.title, required this.userId, required this.userName});
   final String title;
@@ -168,7 +201,7 @@ class _ChartPageState extends State<ChartPage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
         ),
-        body: Column(
+        body: SingleChildScrollView(child: Column(
             children: <Widget>[
               Card(
                 child: Column(
@@ -231,7 +264,7 @@ class _ChartPageState extends State<ChartPage> {
                 ),
               ),
               FutureBuilder<String>(
-              future: getData(widget.userId, isToday),
+              future: getData(isToday),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 if (snapshot.hasData) {
                     return Container(
@@ -253,30 +286,42 @@ class _ChartPageState extends State<ChartPage> {
                                   ),
                                 ),
                               ),
-                              Padding(padding: EdgeInsets.all(50.0)),
                               Card(
                                 child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                        leading: const Icon(
-                                          Icons.location_on_outlined,
-                                          color: Colors.deepPurple,
-                                        ),
-                                        title: Text('Konumlar: ${locationData.join(',')}',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold, fontSize: 19)))
-                                  ],
+                                  children: [
+                                      const ListTile(
+                                          leading: Icon(
+                                            Icons.location_on_outlined,
+                                            color: Colors.deepPurple,
+                                          ),
+                                          title: Text('Konumlar',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold, fontSize: 19))),
+                                    Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: _locations.map((location) {
+                                          return Column(
+                                              children: <Widget> [
+                                                LinearProgressIndicator(
+                                                  backgroundColor: Color(int.parse(location.colorCode)),
+                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                                                  value: (location.count * 0.3),
+                                                ),
+                                                Text(location.locationName),]
+                                          );
+                                        }).toList()
+                                    )
+                                  ]
                                 ),
                               ),
                             ]
                         )
                     );
                 } else {
-                  return Text(widget.userName + ' kullanıcısının verileri getiriliyor.');
+                  return Text(userData?["userName"] + ' kullanıcısının verileri getiriliyor.');
                 }
               },
             ),
-            ]));
+            ])));
   }
 }

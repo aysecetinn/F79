@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
         ),
-        body: Container(
+        body: SingleChildScrollView(child: Container(
           width: screenSize.width,
           height: screenSize.height,
           decoration: BoxDecoration(
@@ -267,6 +267,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-        ));
+        )));
   }
 }

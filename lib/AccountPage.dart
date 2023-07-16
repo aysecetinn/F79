@@ -111,7 +111,7 @@ class _AccountPageState extends State<AccountPage> {
         ),
         centerTitle: true,
       ),
-      body: FutureBuilder<Map<String, dynamic>?>(
+      body: SingleChildScrollView(child: FutureBuilder<Map<String, dynamic>?>(
         future: getUserValue(),
         builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>?> snapshot) {
         if (snapshot.hasData) {
@@ -273,7 +273,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           );
         } else { return Text('kullanıcı Verisi Getiriliyor'); }
-        })
+        }))
     );
   }
 }

@@ -55,7 +55,7 @@ class _InformationPageState extends State<InformationPage> {
           backgroundColor: Color.fromARGB(255, 69, 56, 95),
           centerTitle: true,
         ),
-        body: Container(
+        body: SingleChildScrollView(child: Container(
           width: screenSize.width,
           height: screenSize.height,
           decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class _InformationPageState extends State<InformationPage> {
             )
           ]
         )
-      )
+      ))
     );
   }
 }
