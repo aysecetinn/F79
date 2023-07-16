@@ -84,7 +84,7 @@ class _NotificationPageState extends State<NotificationPage> {
       label: Text(emotion),
       onSelected: (bool selected) {
         setState(() {
-          if (_emotions.length < 2  && !_emotions.contains(emotion+","+colorCode)){
+          if (_emotions.length < 3  && !_emotions.contains(emotion+","+colorCode)){
             _emotions.add(emotion+","+colorCode);
           } else {
             _emotions.remove(emotion+","+colorCode);
@@ -137,6 +137,7 @@ class _NotificationPageState extends State<NotificationPage> {
           Card(
             child: Column(
               children: <Widget>[
+                Padding(padding: EdgeInsets.all(10.0)),
                 const ListTile(
                     title: Text('Şu an nasıl hissediyorsun?',
                         style: TextStyle(

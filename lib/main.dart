@@ -1,5 +1,6 @@
 import 'package:f79/AccountPage.dart';
 import 'package:f79/chartPage.dart';
+import 'package:f79/informationPage.dart';
 import 'package:f79/notificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -33,7 +34,7 @@ class Home extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 138, 116, 185)),
         useMaterial3: true,
       ),
-      home: const HomePage(title: 'F79', userName: '', userId: ''),
+      home: const HomePage(title: 'Duygu Haritası', userName: '', userId: ''),
     );
   }
 }
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(
-                height: 65,
+                height: 25,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -115,10 +116,11 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Color.fromARGB(255, 69, 56, 95),
-                      width: 3,
+                      width: 2,
                     ),
                     borderRadius: BorderRadius.circular(30),
                   ),
+                  minimumSize: Size((MediaQuery.of(context).size.width - 25), 35),
                 ),
                 onPressed: () {},
                 child: TextButton.icon(
@@ -126,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => NotificationPage(
-                          title: 'Farkında Mısın',
+                          title: 'Nasılsın?',
                           userId: widget.userId,
                           userName: widget.userName,
                         ),
@@ -139,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                     color: Color.fromARGB(255, 69, 56, 95),
                   ),
                   label: const Text(
-                    'Farkında Mısın',
+                    'Nasılsın?',
                     style: TextStyle(
                       color: Color.fromARGB(255, 69, 56, 95),
                       fontSize: 25,
@@ -149,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -157,10 +159,11 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Color.fromARGB(255, 69, 56, 95),
-                      width: 3,
+                      width: 2,
                     ),
                     borderRadius: BorderRadius.circular(30),
                   ),
+                  minimumSize: Size((MediaQuery.of(context).size.width - 25), 35),
                 ),
                 onPressed: () {},
                 child: TextButton.icon(
@@ -168,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => ChartPage(
-                          title: 'Grafikler',
+                          title: 'İstatistikler',
                           userId: widget.userId,
                           userName: widget.userName,
                         ),
@@ -181,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                     color: Color.fromARGB(255, 69, 56, 95),
                   ),
                   label: const Text(
-                    'Grafikler',
+                    'İstatistikler',
                     style: TextStyle(
                       color: Color.fromARGB(255, 69, 56, 95),
                       fontSize: 25,
@@ -191,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(
-                height: 150,
+                height: 15,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -200,10 +203,11 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Color.fromARGB(255, 69, 56, 95),
-                      width: 3,
+                      width: 2,
                     ),
                     borderRadius: BorderRadius.circular(45),
                   ),
+                  minimumSize: Size((MediaQuery.of(context).size.width - 25), 35),
                 ),
                 onPressed: () {},
                 child: TextButton.icon(
@@ -211,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const AccountPage(
-                          title: 'AccountPage',
+                          title: 'Duygu Haritası',
                         ),
                       ),
                     );
@@ -222,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   label: const Text(
-                    'HESABIM',
+                    'Hesabım',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -232,7 +236,46 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 69, 56, 95),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 69, 56, 95),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(45),
+                  ),
+                  minimumSize: Size((MediaQuery.of(context).size.width - 25), 35),
+                ),
+                onPressed: () {},
+                child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const InformationPage(
+                          title: 'Başlamadan Önce',
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Image.asset(
+                    'assets/images/logo.png',
+                    width: 40,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'Başlamadan Önce',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontFamily: 'NotoSerifMakasar',
+                    ),
+                  ),
+                ),
               ),
             ],
           ) :
@@ -242,7 +285,7 @@ class _HomePageState extends State<HomePage> {
               shape: RoundedRectangleBorder(
                 side: const BorderSide(
                   color: Color.fromARGB(255, 69, 56, 95),
-                  width: 3,
+                  width: 2,
                 ),
                 borderRadius: BorderRadius.circular(30),
               ),

@@ -202,7 +202,7 @@ class _AccountPageState extends State<AccountPage> {
                               notificationPermission = true;
                             });
                             Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("emotionPeriotTask","emotionPeriotHourTask", frequency: const Duration(minutes: 1));
+                            Workmanager().registerPeriodicTask("emotionPeriotTask","emotionPeriotHourTask", frequency: const Duration(minutes: 15));
                           }),
                     ],
                   ),

@@ -1,3 +1,4 @@
+import 'package:f79/notificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -101,7 +102,7 @@ class _InformationPageState extends State<InformationPage> {
                         color: Color.fromARGB(255, 138, 116, 185),
                       ),
                       title: Text(
-                        'F79 uygulaması ne amaçla geliştirildi?',
+                        'Duygu Haritası uygulaması ne amaçla geliştirildi?',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'NotoSerifMakasar'),
@@ -121,7 +122,7 @@ class _InformationPageState extends State<InformationPage> {
                         color: Color.fromARGB(255, 138, 116, 185),
                       ),
                       title: Text(
-                        'F79 uygulaması ne işe yarar?',
+                        'Duygu Haritası uygulaması ne işe yarar?',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'NotoSerifMakasar'),
@@ -145,10 +146,10 @@ class _InformationPageState extends State<InformationPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomePage(title: "F79", userName: '', userId: '')));
+                          builder: (context) => NotificationPage(title: "F79", userName: '', userId: '')));
                       },
                       child: const Text(
-                        "Let's Go!",
+                        "Hadi Başlayalım!",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'NotoSerifMakasar',
