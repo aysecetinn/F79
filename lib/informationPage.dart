@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
-import 'homePage.dart';
+import 'main.dart';
 
 void main() {
   runApp(const Information());

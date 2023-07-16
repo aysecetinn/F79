@@ -15,6 +15,7 @@ void main() async {
   await Firebase.initializeApp();
   final db = Localstore.instance;
   userData = await db.collection('user').doc("myUser").get();
+  isLogged = userData?["userId"] != null;
 
   runApp(const Home());
 }
@@ -50,11 +51,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    isLogged = userData?["userId"] != null;
     Jiffy.setLocale("tr");
     String _date = '';
     final String date = "${Jiffy.now().EEEE}, ${Jiffy.now().MMMMd}";
     setState(() {
       _date = date;
+    });
+    setState(() {
       isLogged = userData?["userId"] != null;
     });
     final screenSize = MediaQuery.of(context).size;
@@ -78,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.1), BlendMode.dstATop),
                   fit: BoxFit.cover)),
-          child: isLogged ? Column(
+          child: isLogged || widget.userId != '' ? Column(
             children: <Widget>[
               const SizedBox(
                 height: 25,
