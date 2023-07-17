@@ -10,7 +10,7 @@
 - Zehra Kaygılı: Scrum Master / Developer
 
 ## Ürün İsmi 
-- Duygu Anlığı
+- Duygu Haritası
 
 ## Ürün Açıklaması
 - Duygu Anlığı uygulaması bir tür duygu farkındalığı kazandırma egzersizidir. Gün içinde çok kez kısa bildirimlerle duyguları kaydeder. Günlük, haftalık ve aylık raporlar halinde sunar. Duygusal farkındalık, duyguları öğrenmeyi gerektirdiğinden duyguları adlandırmak duygusal farkındalık geliştirmek için bir ilk adımdır. Duygu Anlığı 6 temel duygu ve etrafındaki ilişkili birçok duyguyu geniş ölçekte isimlendirerek size o an nasıl hissettiğinizi sorar, seçenekler verir ve duygularınızı adlandırmanızı ister. Burada amaç ‘şu anda’ zihninizi kontrol eden her duygunun tam farkındalığıdır. Gün içinde sorulan duygu durumu sorularına verilen yanıtları,  “Nasıldın?” ve “Ne yapıyordun?” başlıklarıyla kullanıcının ne ile, ne zaman, nasıl hissettiğinin kaydını grafikler halinde sunar. Böylece sıklıkla tekrar eden baskın duyguların fark edilmesine de olanak sağlar. Duyguları fark etmek ise bireyin kendi düşünce örgüsünü analiz etmesine, bu duyguların altında yatan düşüncelerle karşılaşmasına yardımcı olur. Ne hissettiğimizi fark etmek ve onu adlandırmak, Duygu Anlığı ile duygusal farkındalığa doğru büyük bir adımdır. 
@@ -63,6 +63,26 @@ Birincil: Duygu Anlığı 6 temel duygu ve etrafındaki ilişkili birçok duyguy
 <img width="300" alt="Screenshot_1688324629" src="https://github.com/aysecetinn/F79/assets/129604808/c456f4cd-a9c6-4a3a-b8ac-3745da273a20">
 
 - Sprint Review: Account ve Notification page tamamlandı. Firebase bağlantısı sağlandı. Eksikler değerlendirildi.
+
+- Sprint Retrospective: Daily Srcuma önem verilmesi vurgulanmıştır.
+---
+#Sprint 3
+- Sprint içinde tamamlanması tahmin edilen puan: 100 puan
+
+- Daily Scrum:
+[sprint 3 daily scrum.docx](https://github.com/aysecetinn/F79/files/12065102/sprint.3.daily.scrum.docx)
+
+- Sprint board update: Sprint board screenshotları:
+<img width="900" alt="sprint3" src="https://github.com/aysecetinn/F79/assets/129604808/c02330f3-4b9a-47c2-9ed5-7866101f1874">
+
+- Ürün Durumu: Ekran görüntüleri:
+<img width="300" alt="Screenshot_1689276838" src="https://github.com/aysecetinn/F79/assets/129604808/a585d374-fce6-4cdc-b2c6-ae9ef43e8b4c">
+<img width="300" alt="Screenshot_1689276945" src="https://github.com/aysecetinn/F79/assets/129604808/56b1b491-f688-4ef2-9f5f-62f4d9639c2d">
+<img width="300" alt="Screenshot_1689276813" src="https://github.com/aysecetinn/F79/assets/129604808/44b13a1c-1174-4a3f-81ad-f7e1e25be4d6">
+<img width="300" alt="Screenshot_1689276859" src="https://github.com/aysecetinn/F79/assets/129604808/ed283203-bfa8-4f90-ab3e-499106fb8130">
+<img width="300" alt="Screenshot_1689277290" src="https://github.com/aysecetinn/F79/assets/129604808/72b31235-e286-4739-942f-c503195891fb">
+
+- Sprint Review: Uygulama tasarımı düzenlendi. Firebase düzenlemeleri yapıldı.
 
 - Sprint Retrospective: Daily Srcuma önem verilmesi vurgulanmıştır.
 
