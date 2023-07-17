@@ -34,57 +34,70 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(children: [
-            SizedBox(
-              height: 50,
-            ),
-            Icon(
-              Icons.add_a_photo,
-              size: 120,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Welcome to F-79',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Create an account to begin your journey of becoming aware of your emotions.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            SocialButton(
+    final screenSize = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: Container(
+        width: screenSize.width,
+        height: screenSize.height,
+        decoration: BoxDecoration(
+            color: Color.fromARGB(255, 234, 219, 255),
+            image: DecorationImage(
+                image: AssetImage('assets/images/appicon.jpg'),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.1), BlendMode.dstATop),
+                fit: BoxFit.cover)),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(children: [
+              SizedBox(
+                height: 60,
+              ),
+              Image.asset(
+                'assets/images/logo.png',
+                width: 200,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'Welcome to Duygu Haritası',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'Create an account to begin your journey of becoming aware of your emotions.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(
+                height: 60,
+              ),
+              SocialButton(
                 iconPath: 'assets/images/google2.png',
                 label: 'Continue with Google',
                 type: 'Google',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SocialButton(
-              iconPath: 'assets/images/facebook2.png',
-              label: 'Continue with Facebook',
-              horizontalPadding: 60,
-              verticalpadding: 13,
-              type: 'Facebook',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ]),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SocialButton(
+                iconPath: 'assets/images/facebook2.png',
+                label: 'Continue with Facebook',
+                horizontalPadding: 60,
+                verticalpadding: 13,
+                type: 'Facebook',
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ]),
+          ),
         ),
       ),
     );
@@ -94,35 +107,44 @@ class LoginPage extends StatelessWidget {
 Future<void> loginWithProvider(type, context) async {
   final db = Localstore.instance;
   final id = "myUser";
-   if (type == 'Facebook') {
-     final LoginResult loginResult = await FacebookAuth.instance.login();
-     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+  if (type == 'Facebook') {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    final res = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-     db.collection('user').doc(id).set({
-       'userId': res.user!.uid!,
-       'userName': res.user!.displayName!,
-       'photo': res.user!.photoURL!
-     });
-     Navigator.of(context).push(MaterialPageRoute(
-         builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
+    final res = await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
+    db.collection('user').doc(id).set({
+      'userId': res.user!.uid!,
+      'userName': res.user!.displayName!,
+      'photo': res.user!.photoURL!
+    });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomePage(
+            title: "F79",
+            userId: res.user!.uid!,
+            userName: res.user!.displayName!)));
   } else {
-     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-     final credential = GoogleAuthProvider.credential(
-       accessToken: googleAuth?.accessToken,
-       idToken: googleAuth?.idToken,
-     );
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
 
-     final res = await FirebaseAuth.instance.signInWithCredential(credential);
-     db.collection('user').doc(id).set({
-       'userId': res.user!.uid!,
-       'userName': res.user!.displayName!,
-       'photo': res.user!.photoURL!
-     });
-     Navigator.of(context).push(MaterialPageRoute(
-         builder: (context) => HomePage(title: "F79", userId: res.user!.uid!, userName: res.user!.displayName!)));
-   }
+    final res = await FirebaseAuth.instance.signInWithCredential(credential);
+    db.collection('user').doc(id).set({
+      'userId': res.user!.uid!,
+      'userName': res.user!.displayName!,
+      'photo': res.user!.photoURL!
+    });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomePage(
+            title: "F79",
+            userId: res.user!.uid!,
+            userName: res.user!.displayName!)));
+  }
 }
 
 class SocialButton extends StatelessWidget {
@@ -143,7 +165,9 @@ class SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: () async { await loginWithProvider(type, context); },
+      onPressed: () async {
+        await loginWithProvider(type, context);
+      },
       icon: Image.asset(
         iconPath,
         width: 30,

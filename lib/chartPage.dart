@@ -44,7 +44,11 @@ Future<String> getData(bool isToday) async {
 
   _result = [];
   var now = DateTime.now();
-  var date = now.year.toString() + "-" + now.month.toString() + "-" + (isToday ? now.day.toString() : (now.day - 1).toString());
+  var date = now.year.toString() +
+      "-" +
+      now.month.toString() +
+      "-" +
+      (isToday ? now.day.toString() : (now.day - 1).toString());
   var db = FirebaseFirestore.instance;
   var reference = db.collection('emotion/${userData?["userId"]}/$date');
   var response = await reference.get();
@@ -61,9 +65,12 @@ Future<String> getData(bool isToday) async {
     var emotions = datas['emotions'];
     var location = datas['locations'];
     locationData.add(location);
-    for(var emotion in emotions) {
-      if (_result.any((element) => element.emotionName == emotion.split(',')[0])) {
-        var value = _result.where((element) => element.emotionName == emotion.split(',')[0]).first;
+    for (var emotion in emotions) {
+      if (_result
+          .any((element) => element.emotionName == emotion.split(',')[0])) {
+        var value = _result
+            .where((element) => element.emotionName == emotion.split(',')[0])
+            .first;
         _result.remove(value);
         value.count += 1;
         _result.add(value);
@@ -86,14 +93,14 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Chart',
       theme: ThemeData(
+        fontFamily: 'NotoSerifMakasar',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChartPage(title: 'F79', userId: '', userName: ''),
+      home: const ChartPage(title: 'Duygu Haritası', userId: '', userName: ''),
     );
   }
 }
@@ -157,22 +164,30 @@ List<LocationClass> ProgressBarList(List<dynamic> locations) {
   _locations = [];
 
   for (var locationVal in locations) {
-    if (_locations.any((element) => element.locationName == locationVal[0].split(',')[0])){
+    if (_locations.any(
+        (element) => element.locationName == locationVal[0].split(',')[0])) {
       continue;
     }
     LocationClass locationClass = LocationClass();
     locationClass.locationName = locationVal[0].split(',')[0];
     locationClass.colorCode = locationVal[0].split(',')[1];
-    locationClass.count = locations.where((element) => element[0].split(',')[0] == locationVal[0].split(',')[0]).length;
+    locationClass.count = locations
+        .where((element) =>
+            element[0].split(',')[0] == locationVal[0].split(',')[0])
+        .length;
 
     _locations.add(locationClass);
   }
 
-    return _locations;
+  return _locations;
 }
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({super.key, required this.title, required this.userId, required this.userName});
+  const ChartPage(
+      {super.key,
+      required this.title,
+      required this.userId,
+      required this.userName});
   final String title;
   final String userId;
   final String userName;
@@ -195,59 +210,30 @@ class _ChartPageState extends State<ChartPage> {
     setState(() {
       _date = date;
     });
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 23),
+          ),
+          backgroundColor: Color.fromARGB(255, 69, 56, 95),
+          centerTitle: true,
         ),
-        body: SingleChildScrollView(child: Column(
-            children: <Widget>[
-              Card(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        FilledButton(
-                          onPressed: () { setState(() {
-                            isToday = false;
-                          }); },
-                          style: TextButton.styleFrom(
-                            textStyle:
-                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            primary: Colors.white,
-                            minimumSize: Size((MediaQuery.of(context).size.width - 10) / 2, 36),
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                            ),
-                          ),
-                          child: Text('Önceki Gün'),
-                        ),
-                        FilledButton(
-                          onPressed: () { setState(() {
-                            isToday = true;
-                          }); },
-                          style: TextButton.styleFrom(
-                            textStyle:
-                            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                            primary: Colors.white,
-                            minimumSize: Size((MediaQuery.of(context).size.width - 10) / 2, 36),
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                            ),
-                          ),
-                          child: Text('Bugün'),
-                        ),
-                      ]
-                    )
-                  ],
-                ),
-              ),
+        body: Container(
+            width: screenSize.width,
+            height: screenSize.height,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 234, 219, 255),
+                image: DecorationImage(
+                    image: AssetImage('assets/images/appicon.jpg'),
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.1), BlendMode.dstATop),
+                    fit: BoxFit.cover)),
+            child: SingleChildScrollView(
+                child: Column(children: <Widget>[
               Card(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -255,7 +241,7 @@ class _ChartPageState extends State<ChartPage> {
                     ListTile(
                         leading: const Icon(
                           Icons.calendar_today,
-                          color: Colors.deepPurple,
+                          color: Color.fromARGB(255, 138, 116, 185),
                         ),
                         title: Text(_date,
                             style: const TextStyle(
@@ -263,65 +249,119 @@ class _ChartPageState extends State<ChartPage> {
                   ],
                 ),
               ),
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      FilledButton(
+                        onPressed: () {
+                          setState(() {
+                            isToday = false;
+                          });
+                        },
+                        style: FilledButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'NotoSerifMakasar',
+                          ),
+                          backgroundColor: Color.fromARGB(255, 69, 56, 95),
+                          minimumSize: Size(
+                              (MediaQuery.of(context).size.width - 10) / 2, 36),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        child: Text('Önceki Gün'),
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          setState(() {
+                            isToday = true;
+                          });
+                        },
+                        style: FilledButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'NotoSerifMakasar',
+                          ),
+                          backgroundColor: Color.fromARGB(255, 69, 56, 95),
+                          minimumSize: Size(
+                              (MediaQuery.of(context).size.width - 10) / 2, 36),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                        child: Text('Bugün'),
+                      ),
+                    ])
+                  ],
+                ),
+              ),
               FutureBuilder<String>(
-              future: getData(isToday),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                if (snapshot.hasData) {
+                future: getData(isToday),
+                builder:
+                    (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.hasData) {
                     return Container(
-                        child: Column(
-                            children: <Widget> [
-                              AspectRatio(
-                                aspectRatio: 1,
-                                child: PieChart(
-                                  PieChartData(
-                                    pieTouchData: PieTouchData(touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                    },
-                                    ),
-                                    borderData: FlBorderData(
-                                      show: false,
-                                    ),
-                                    sectionsSpace: 0.5,
-                                    centerSpaceRadius: 100,
-                                    sections: showingSections(_result),
+                        child: Column(children: <Widget>[
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {},
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0.5,
+                            centerSpaceRadius: 100,
+                            sections: showingSections(_result),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: Column(children: [
+                          const ListTile(
+                              leading: Icon(
+                                Icons.location_on_outlined,
+                                color: Color.fromARGB(255, 138, 116, 185),
+                              ),
+                              title: Text('Konumlar',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 19))),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: _locations.map((location) {
+                                return Column(children: <Widget>[
+                                  LinearProgressIndicator(
+                                    backgroundColor:
+                                        Color(int.parse(location.colorCode)),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.deepPurple),
+                                    value: (location.count * 0.3),
                                   ),
-                                ),
-                              ),
-                              Card(
-                                child: Column(
-                                  children: [
-                                      const ListTile(
-                                          leading: Icon(
-                                            Icons.location_on_outlined,
-                                            color: Colors.deepPurple,
-                                          ),
-                                          title: Text('Konumlar',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold, fontSize: 19))),
-                                    Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: _locations.map((location) {
-                                          return Column(
-                                              children: <Widget> [
-                                                LinearProgressIndicator(
-                                                  backgroundColor: Color(int.parse(location.colorCode)),
-                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepPurple),
-                                                  value: (location.count * 0.3),
-                                                ),
-                                                Text(location.locationName),]
-                                          );
-                                        }).toList()
-                                    )
-                                  ]
-                                ),
-                              ),
-                            ]
-                        )
-                    );
-                } else {
-                  return Text(userData?["userName"] + ' kullanıcısının verileri getiriliyor.');
-                }
-              },
-            ),
-            ])));
+                                  Text(location.locationName),
+                                ]);
+                              }).toList())
+                        ]),
+                      ),
+                    ]));
+                  } else {
+                    return Text(userData?["userName"] +
+                        ' kullanıcısının verileri getiriliyor.');
+                  }
+                },
+              ),
+            ]))));
   }
 }
