@@ -357,8 +357,7 @@ class _ChartPageState extends State<ChartPage> {
                       ),
                     ]));
                   } else {
-                    return Text(userData?["userName"] +
-                        ' kullanıcısının verileri getiriliyor.');
+                    return Text('Veriler getiriliyor.');
                   }
                 },
               ),

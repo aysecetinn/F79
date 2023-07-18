@@ -1,14 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:localstore/localstore.dart';
 import 'package:workmanager/workmanager.dart';
 
+import 'loginPage.dart';
+
 Map<String, dynamic>? userData;
 bool notificationPermission = false;
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher);
-
   runApp(const Account());
 }
 
@@ -196,13 +196,14 @@ class _AccountPageState extends State<AccountPage> {
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
-                          child: Text(!notificationPermission ? "Bildirim'e İzin Ver" : "Bildirime İzin Verildi"),
+                          child: Text(!notificationPermission ? "Bildirime İzin Ver" : "Bildirime İzin Verildi"),
                           onPressed: () {
                             setState(() {
-                              notificationPermission = true;
+                              notificationPermission = !notificationPermission;
                             });
-                            Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("emotionPeriotTask","emotionPeriotHourTask", frequency: const Duration(minutes: 15));
+                            WidgetsFlutterBinding.ensureInitialized();
+                            Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+                            Workmanager().registerPeriodicTask("emotionPeriotTask1","emotionPeriotHourTask2", frequency: const Duration(minutes: 1));
                           }),
                     ],
                   ),
@@ -257,6 +258,25 @@ class _AccountPageState extends State<AccountPage> {
                   const SizedBox(
                     height: 40,
                   ),
+                  OutlinedButton(
+                      style: TextButton.styleFrom(
+                        textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        primary: Colors.black54,
+                        minimumSize: Size(88, 36),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      child: Text("Çıkış Yap"),
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        final db = Localstore.instance;
+                        await db.collection('user').doc("myUser").delete();
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LoginPage()));
+                      }),
                   const Icon(
                     Icons.local_post_office_outlined,
                     size: 100,
@@ -267,6 +287,9 @@ class _AccountPageState extends State<AccountPage> {
                       fontSize: 14,
                       fontFamily: 'NotoSerifMakasar',
                     ),
+                  ),
+                  const SizedBox(
+                    height: 50,
                   ),
                 ],
               ),
